@@ -5,6 +5,9 @@ spring:
     name: springboot-kafka-ex
   kafka:
     bootstrap-servers: localhost:9092
+    topic:
+      first: "topic1"
+      second: "topic2"
     consumer:
       group-id: my-group
       auto-offset-reset: earliest

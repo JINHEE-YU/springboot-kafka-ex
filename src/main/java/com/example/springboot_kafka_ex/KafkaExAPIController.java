@@ -1,5 +1,6 @@
 package com.example.springboot_kafka_ex;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +22,10 @@ public class KafkaExAPIController {
   @GetMapping("/send")
   public String sendMessage() {
 
-    String topic = "topic1";
     String message = "Hello, Kafka!!";
 
     try {
-      kafkaProducer.sendMessage(topic, message);
+      kafkaProducer.sendMessage(message);
     } catch (Exception e) {
       log.error("오류발생", e);
     }
@@ -35,10 +35,8 @@ public class KafkaExAPIController {
   @GetMapping("/send/msg")
   public String sendMessage(@RequestParam(value = "message") String message) {
 
-    String topic = "topic1";
-
     try {
-      kafkaProducer.sendMessage(topic, message);
+      kafkaProducer.sendMessage(message);
       return "success";
     } catch (Exception e) {
       log.error("오류발생", e);
@@ -49,11 +47,9 @@ public class KafkaExAPIController {
   @GetMapping("/send2")
   public String sendMessage2() {
 
-    String topic = "topic2";
-
     UserDTO user = UserDTO.builder().age(10).nickName("Mika").chatMsg("I'm Mika").build();
     try {
-      kafkaProducer.sendMessage(topic, user);
+      kafkaProducer.sendMessage(user);
       return "success";
     } catch (Exception e) {
       log.error("오류발생", e);
@@ -64,10 +60,8 @@ public class KafkaExAPIController {
   @PostMapping("/send2/user")
   public String sendUserDTO(@RequestBody UserDTO user) {
 
-    String topic = "topic2";
-
     try {
-      kafkaProducer.sendMessage(topic, user);
+      kafkaProducer.sendMessage(user);
     } catch (Exception e) {
       log.error("오류발생", e);
     }

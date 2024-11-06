@@ -14,12 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-  @KafkaListener(topics = "topic1")
+  @KafkaListener(topics = "${spring.kafka.topic.first}")
   public void listen(String message) {
     log.info("kafka message = {}", message);
   }
 
-  @KafkaListener(topics = "topic2", containerFactory = "filterListenerContainerFactory")
+  @KafkaListener(topics = "${spring.kafka.topic.second}", containerFactory = "filterListenerContainerFactory")
   public void listen(ConsumerRecord<String, UserDTO> message) {
     log.info("kafka message = {}", message);
   }
