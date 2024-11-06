@@ -1,0 +1,11 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: springboot-kafka-ex
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+
