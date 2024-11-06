@@ -1,5 +1,6 @@
 package com.example.springboot_kafka_ex.producer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +13,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaProducer {
+
+  @Value("${spring.kafka.topic.first}")
+  private String topic1;
+  @Value("${spring.kafka.topic.second}")
+  private String topic2;
+
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaTemplate2;
 
-  public void sendMessage(String topic, String message) {
-    sendMessage(kafkaTemplate, topic, message);
+  public void sendMessage(String message) {
+    sendMessage(kafkaTemplate, topic1, message);
   }
 
-  public void sendMessage(String topic, UserDTO message) {
-    sendMessage(kafkaTemplate2, topic, message);
+  public void sendMessage(UserDTO message) {
+    sendMessage(kafkaTemplate2, topic2, message);
   }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {
