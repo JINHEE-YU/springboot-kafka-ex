@@ -22,8 +22,16 @@ public class KafkaProducer {
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaTemplate2;
 
+  public void sendMessage(String topic, String message) {
+    sendMessage(kafkaTemplate, topic, message);
+  }
+
   public void sendMessage(String message) {
     sendMessage(kafkaTemplate, topic1, message);
+  }
+
+  public void sendMessage(String topic, UserDTO message) {
+    sendMessage(kafkaTemplate2, topic, message);
   }
 
   public void sendMessage(UserDTO message) {
