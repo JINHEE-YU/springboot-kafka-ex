@@ -3,8 +3,6 @@ package com.example.springboot_kafka_ex.consumer;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @RequiredArgsConstructor
 public class KafkaConsumer {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
   private CountDownLatch latch = new CountDownLatch(1);
   private String payload = null;
