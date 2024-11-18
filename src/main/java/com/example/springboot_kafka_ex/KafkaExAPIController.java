@@ -1,5 +1,8 @@
 package com.example.springboot_kafka_ex;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +24,7 @@ public class KafkaExAPIController {
   @GetMapping("/send")
   public String sendMessage() {
 
-    String message = "Hello, Kafka!!";
+    String message = "[\"Hello\", \"Kafka!!\"]]";
 
     try {
       kafkaProducer.sendMessage(message);
@@ -33,9 +36,24 @@ public class KafkaExAPIController {
 
   @GetMapping("/send/msg")
   public String sendMessage(@RequestParam(value = "message") String message) {
-
+    // 여러개의 message를 보내면 ,로 구분
     try {
       kafkaProducer.sendMessage(message);
+      return "success";
+    } catch (Exception e) {
+      log.error("오류발생", e);
+      return "failure";
+    }
+  }
+
+  @Value("${spring.kafka.topic.msg-filter}")
+  String mgsListTopic;
+
+  @GetMapping("/send/msgs")
+  public String sendMessages(@RequestParam(value = "message") List<String> message) {
+    // 여러개의 message를 보내면 List형태로 구분
+    try {
+      kafkaProducer.sendMessage(mgsListTopic, message);
       return "success";
     } catch (Exception e) {
       log.error("오류발생", e);
@@ -46,7 +64,10 @@ public class KafkaExAPIController {
   @GetMapping("/send2")
   public String sendMessage2() {
 
-    UserDTO user = UserDTO.builder().age(10).nickName("Mika").chatMsg("I'm Mika").build();
+    UserDTO user = new UserDTO();
+    user.setAge(10);
+    user.setNickName("Mika");
+    user.setChatMsg("I'm Mika");
     try {
       kafkaProducer.sendMessage(user);
       return "success";
@@ -64,6 +85,14 @@ public class KafkaExAPIController {
     } catch (Exception e) {
       log.error("오류발생", e);
     }
+    return "hello";
+  }
+
+  @PostMapping("/send2/users")
+  public String sendUserDTO(@RequestBody List<UserDTO> users) {
+
+    kafkaProducer.sendMessage(users);
+
     return "hello";
   }
 
