@@ -1,5 +1,7 @@
 package com.example.springboot_kafka_ex.producer;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,17 @@ public class KafkaProducer {
 
   @Value("${spring.kafka.topic.first}")
   private String topic1;
+  @Value("${spring.kafka.topic.msg-filter}")
+  private String topicMsgList;
   @Value("${spring.kafka.topic.second}")
   private String topic2;
+  @Value("${spring.kafka.topic.dto-list}")
+  private String topicDtoList;
 
   private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaUserTemplate;
+  private final KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate;
 
   public void sendMessage(String topic, String message) {
     sendMessage(kafkaTemplate, topic, message);
@@ -30,12 +38,20 @@ public class KafkaProducer {
     sendMessage(kafkaTemplate, topic1, message);
   }
 
+  public void sendMessage(String topic, List<String> message) {
+    sendMessage(kafkaStringListTemplate, topic, message);
+  }
+
   public void sendMessage(String topic, UserDTO message) {
     sendMessage(kafkaUserTemplate, topic, message);
   }
 
   public void sendMessage(UserDTO message) {
     sendMessage(kafkaUserTemplate, topic2, message);
+  }
+
+  public void sendMessage(List<UserDTO> messages) {
+    sendMessage(kafkaUserListTemplate, topicDtoList, messages);
   }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {

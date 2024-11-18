@@ -1,6 +1,7 @@
 package com.example.springboot_kafka_ex.producer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -32,6 +33,20 @@ public class KafkaProducerConfig {
   }
 
   @Bean
+  public ProducerFactory<String, List<String>> producerStringListFactory() {
+    Map<String, Object> configProps = new HashMap<>();
+    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+    return new DefaultKafkaProducerFactory<>(configProps);
+  }
+
+  @Bean
+  public KafkaTemplate<String, List<String>> kafkaStringListTemplate() {
+    return new KafkaTemplate<>(producerStringListFactory());
+  }
+
+  @Bean
   public ProducerFactory<String, UserDTO> producerUserFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -45,4 +60,18 @@ public class KafkaProducerConfig {
     return new KafkaTemplate<>(producerUserFactory());
   }
 
+  @Bean
+  public ProducerFactory<String, List<UserDTO>> producerUserListFactory() {
+    Map<String, Object> configProps = new HashMap<>();
+    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+    return new DefaultKafkaProducerFactory<>(configProps);
+  }
+
+  @Bean
+  public KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate() {
+    return new KafkaTemplate<>(producerUserListFactory());
+  }
 }
