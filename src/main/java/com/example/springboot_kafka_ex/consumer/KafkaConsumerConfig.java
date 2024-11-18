@@ -28,7 +28,14 @@ public class KafkaConsumerConfig {
   }
 
   @Bean
-  public ConsumerFactory<String, UserDTO> consumerFactory2() {
+  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerFactory());
+    return factory;
+  }
+
+  @Bean
+  public ConsumerFactory<String, UserDTO> consumerUserFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
     configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
@@ -42,16 +49,9 @@ public class KafkaConsumerConfig {
   }
 
   @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory());
-    return factory;
-  }
-
-  @Bean
   public ConcurrentKafkaListenerContainerFactory<String, UserDTO> filterListenerContainerFactory() {
     ConcurrentKafkaListenerContainerFactory<String, UserDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory2());
+    factory.setConsumerFactory(consumerUserFactory());
     factory.setRecordFilterStrategy(
         record -> record.value().getAge() > 30);
     return factory;

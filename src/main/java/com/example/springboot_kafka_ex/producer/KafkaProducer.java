@@ -20,7 +20,7 @@ public class KafkaProducer {
   private String topic2;
 
   private final KafkaTemplate<String, String> kafkaTemplate;
-  private final KafkaTemplate<String, UserDTO> kafkaTemplate2;
+  private final KafkaTemplate<String, UserDTO> kafkaUserTemplate;
 
   public void sendMessage(String topic, String message) {
     sendMessage(kafkaTemplate, topic, message);
@@ -31,11 +31,11 @@ public class KafkaProducer {
   }
 
   public void sendMessage(String topic, UserDTO message) {
-    sendMessage(kafkaTemplate2, topic, message);
+    sendMessage(kafkaUserTemplate, topic, message);
   }
 
   public void sendMessage(UserDTO message) {
-    sendMessage(kafkaTemplate2, topic2, message);
+    sendMessage(kafkaUserTemplate, topic2, message);
   }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {

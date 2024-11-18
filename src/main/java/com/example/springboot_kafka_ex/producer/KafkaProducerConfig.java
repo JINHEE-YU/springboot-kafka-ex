@@ -32,7 +32,7 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public ProducerFactory<String, UserDTO> producerFactory2() {
+  public ProducerFactory<String, UserDTO> producerUserFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -41,8 +41,8 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public KafkaTemplate<String, UserDTO> kafkaTemplate2() {
-    return new KafkaTemplate<>(producerFactory2());
+  public KafkaTemplate<String, UserDTO> kafkaUserTemplate() {
+    return new KafkaTemplate<>(producerUserFactory());
   }
 
 }
