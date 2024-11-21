@@ -30,11 +30,22 @@ public class KafkaProducer {
    */
   @Value("${spring.kafka.topic.group-test}")
   private String topicGroupTest;
+  /**
+   * Kafka에서는 key를 해시하여 파티션을 결정
+   * 현상 확인을 위해 "check-partition"토픽의 파티션을 10개로 할당
+   */
+  @Value("${spring.kafka.topic.check-partition}")
+  String checkPartitionTopic;
+
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaUserTemplate;
   private final KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate;
+
+  public void sendMessage2CheckPartition(String messageKey, String message) {
+    sendMessage(kafkaTemplate, checkPartitionTopic, messageKey, message);
+  }
 
   public void sendMessage(String topic, String message) {
     sendMessage(kafkaTemplate, topic, message);
@@ -78,4 +89,22 @@ public class KafkaProducer {
       log.error("Exception while sending message = {} to topic = {}", message, topic, e);
     }
   }
+
+  private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, String msgKey, T message) {
+    try {
+      tpl.send(topic, msgKey, message).whenComplete((result, ex) -> {
+        if (ex != null) {
+          log.error("Failed to send message-key ={}, message = {} to topic = {} due to {}", msgKey, message, topic,
+              ex.getMessage());
+        } else {
+          log.info("Kafka Producer sent message: " + message + " with key: " + msgKey + " to partition: "
+              + result.getRecordMetadata().partition());
+
+        }
+      });
+    } catch (Exception e) {
+      log.error("Exception while sending message-key ={}, message = {} to topic = {}", msgKey, message, topic, e);
+    }
+  }
+
 }

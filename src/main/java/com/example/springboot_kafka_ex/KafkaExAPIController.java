@@ -74,6 +74,20 @@ public class KafkaExAPIController {
     }
   }
 
+  @GetMapping("/partition")
+  public String useMessageKey(@RequestParam("key-count") int keyCount,
+      @RequestParam(value = "message") String message) {
+
+    try {
+      for (int i = 1; i <= keyCount; i++) {
+        kafkaProducer.sendMessage2CheckPartition(Integer.toString(Math.round(i & 3)), message + " " + i);
+      }
+    } catch (Exception e) {
+      log.error("오류발생", e);
+    }
+    return "hello";
+  }
+
   @GetMapping("/send2")
   public String sendMessage2() {
 
