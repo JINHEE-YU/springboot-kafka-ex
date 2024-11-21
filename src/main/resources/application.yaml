@@ -12,6 +12,7 @@ spring:
       dto-list: dto-list
       test: testTopic
       group-test: group-test
+      check-partition: check-partition
     consumer:
       group-id: my-group
       auto-offset-reset: earliest
