@@ -34,6 +34,19 @@ public class KafkaExAPIController {
     return "hello";
   }
 
+  @GetMapping("/test/groupid")
+  public String groupidTest(@RequestParam(value = "message") String message) {
+
+    try {
+      for (int i = 0; i < 800; i++) {
+        kafkaProducer.sendMessage4GroupIdTest(message + " " + i);
+      }
+    } catch (Exception e) {
+      log.error("오류발생", e);
+    }
+    return "hello";
+  }
+
   @GetMapping("/send/msg")
   public String sendMessage(@RequestParam(value = "message") String message) {
     // 여러개의 message를 보내면 ,로 구분

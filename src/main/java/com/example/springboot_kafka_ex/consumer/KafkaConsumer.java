@@ -26,9 +26,24 @@ public class KafkaConsumer {
   private String payload = null;
 
   /** 콤마(,)를 기준으로 구분된 1건의 "문자열" 데이터 수령 */
-  @KafkaListener(topics = "${spring.kafka.topic.first}")
+  @KafkaListener(topics = "${spring.kafka.topic.first}", groupId = "1")
   public void listen(String message) {
-    log.info("kafka message = {}", message);
+    log.info("[Group1A]kafka message = {}", message);
+  }
+
+  @KafkaListener(topics = "${spring.kafka.topic.group-test}", groupId = "1")
+  public void listen1A(String message) {
+    log.info("[Group1A]kafka message = {}", message);
+  }
+
+  @KafkaListener(topics = "${spring.kafka.topic.group-test}", groupId = "1")
+  public void listen1B(String message) {
+    log.info("[Group1B]kafka message = {}", message);
+  }
+
+  @KafkaListener(topics = "${spring.kafka.topic.group-test}", groupId = "2")
+  public void listen2(String message) {
+    log.info("[Group2]kafka message = {}", message);
   }
 
   /**

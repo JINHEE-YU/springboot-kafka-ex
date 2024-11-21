@@ -24,6 +24,8 @@ public class KafkaProducer {
   private String topic2;
   @Value("${spring.kafka.topic.dto-list}")
   private String topicDtoList;
+  @Value("${spring.kafka.topic.group-test}")
+  private String topicGroupTest;
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
@@ -36,6 +38,10 @@ public class KafkaProducer {
 
   public void sendMessage(String message) {
     sendMessage(kafkaTemplate, topic1, message);
+  }
+
+  public void sendMessage4GroupIdTest(String message) {
+    sendMessage(kafkaTemplate, topicGroupTest, message);
   }
 
   public void sendMessage(String topic, List<String> message) {
