@@ -24,6 +24,10 @@ public class KafkaProducer {
   private String topic2;
   @Value("${spring.kafka.topic.dto-list}")
   private String topicDtoList;
+  /**
+   * groupId를 공유하는 소비자 간에 메시지를 중복되지 않게 병렬로 처리
+   * 현상 확인을 위해 3개의 파티션으로 구성
+   */
   @Value("${spring.kafka.topic.group-test}")
   private String topicGroupTest;
 
