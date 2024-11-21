@@ -25,11 +25,18 @@ public class KafkaProducer {
   @Value("${spring.kafka.topic.dto-list}")
   private String topicDtoList;
   /**
+   * groupId를 공유하는 소비자 간에 메시지를 중복되지 않게 병렬로 처리
+   * 현상 확인을 위해 3개의 파티션으로 구성
+   */
+  @Value("${spring.kafka.topic.group-test}")
+  private String topicGroupTest;
+  /**
    * Kafka에서는 key를 해시하여 파티션을 결정
    * 현상 확인을 위해 "check-partition"토픽의 파티션을 10개로 할당
    */
   @Value("${spring.kafka.topic.check-partition}")
   String checkPartitionTopic;
+
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
@@ -46,6 +53,10 @@ public class KafkaProducer {
 
   public void sendMessage(String message) {
     sendMessage(kafkaTemplate, topic1, message);
+  }
+
+  public void sendMessage4GroupIdTest(String message) {
+    sendMessage(kafkaTemplate, topicGroupTest, message);
   }
 
   public void sendMessage(String topic, List<String> message) {

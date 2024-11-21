@@ -11,6 +11,15 @@ spring:
       second: topic2
       dto-list: dto-list
       test: testTopic
+      group-test: group-test
     consumer:
       group-id: my-group
       auto-offset-reset: earliest
+# logging:
+#   level:
+#     root: INFO
+#   file:
+#     name: D:/source/java-workspace/springboot-kafka-ex/logs/application.log
+#     encoding: UTF-8
+#     max-size: 10MB
+#     max-history: 30
