@@ -21,9 +21,10 @@ Springboot를 이용하여 Kafka와 연동여 기본적인 통신이 가능한 �
 |Method|URI|Explanation|TOPIC|
 |------|---|-------|--------|
 |GET|/send|고정된 String타입의 message값 전송<br>복수개를 전송하는 경우 `,`로 구분하여 전송|topic1|
-|GET|/send/msg|String타입의 message값을 List형태로 전송<br>`추출`로 시작하는 데이터 필터기능 추가|mgs-filter|
 |GET|/send2|고정된 UserDTO타입의 단일개의 값 전송|second|
+|GET|/send/msg|String타입의 message값을 전송(`,`로 구분)<br>`추출`로 시작하는 데이터 필터기능 추가|mgs-filter|
+|GET|/send/msgs|String타입의 message값을 List형태로 전송<br>`추출`로 시작하는 데이터 필터기능 추가|mgs-filter|
 |GET|/test/groupid|GroupId테스트 - groupid에따라 소비자가 메시지를 병렬로 처리하는 현상 확인|group-test|
-|GET|/partition|key-count와 message를 할당하여 message-key에 따라 파티셔닝이 나눠 들어가는 현상 확인|second|
-|POST|/send2/user|UserDTO타입의 단일개의 값 전송<br> `age가 30 이하`인 데이터만 수신|topic2|
-|POST|/send2/users|UserDTO타입의 1개이상의 값 전송(JSON형식의 List형태)|dto-list|
+|GET|/test/partition|key-count와 message를 할당하여 message-key에 따라 파티셔닝이 나눠 들어가는 현상 확인|second|
+|POST|/send/user|UserDTO타입의 단일개의 값 전송<br> `age가 30 이하`인 데이터만 수신|topic2|
+|POST|/send/users|UserDTO타입의 1개이상의 값 전송(JSON형식의 List형태)|dto-list|

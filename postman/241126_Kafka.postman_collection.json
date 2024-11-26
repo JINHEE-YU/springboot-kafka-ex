@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "e5cd8349-dd29-4ef1-8030-b6ee42305608",
+		"name": "Kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5869291"
+	},
+	"item": [
+		{
+			"name": "[/send]고정된 String타입의 message값 전송",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/send/msg?message=POSTMAN&message=필터1&message=2&message=추출&message=추출2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send",
+						"msg"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "POSTMAN"
+						},
+						{
+							"key": "message",
+							"value": "필터1"
+						},
+						{
+							"key": "message",
+							"value": "2"
+						},
+						{
+							"key": "message",
+							"value": "추출"
+						},
+						{
+							"key": "message",
+							"value": "추출2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/send2]고정된 UserDTO타입의 단일개의 값 전송",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/send2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/send/msg?message=]message통신",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/send/msg?message=POSTMAN&message=필터1&message=2&message=추출&message=추출2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send",
+						"msg"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "POSTMAN"
+						},
+						{
+							"key": "message",
+							"value": "필터1"
+						},
+						{
+							"key": "message",
+							"value": "2"
+						},
+						{
+							"key": "message",
+							"value": "추출"
+						},
+						{
+							"key": "message",
+							"value": "추출2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/send/msgs?message=]message통신",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/send/msgs?message=POSTMAN,test＼“&message=필터&message=추출&message=추출2&message=추출3&message=추출4&message=추출5&message=추출6&message=추출7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send",
+						"msgs"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "POSTMAN,test＼“"
+						},
+						{
+							"key": "message",
+							"value": "필터"
+						},
+						{
+							"key": "message",
+							"value": "추출"
+						},
+						{
+							"key": "message",
+							"value": "추출2"
+						},
+						{
+							"key": "message",
+							"value": "추출3"
+						},
+						{
+							"key": "message",
+							"value": "추출4"
+						},
+						{
+							"key": "message",
+							"value": "추출5"
+						},
+						{
+							"key": "message",
+							"value": "추출6"
+						},
+						{
+							"key": "message",
+							"value": "추출7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/send/user]UserDTO 단일개 통신",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"myid10\",\r\n    \"age\": 30,\r\n    \"chatMsa\": \"POSTMAN10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/send/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send",
+						"user"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/send/users]UserDTO 1개 이상 통신",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"id\": \"myid\",\r\n    \"age\": 10,\r\n    \"chatMsa\": \"POSTMAN\"\r\n},{\r\n    \"id\": \"myid\",\r\n    \"age\": 30,\r\n    \"chatMsa\": \"POSTMAN\"\r\n},{\r\n    \"id\": \"myid\",\r\n    \"age\": 40,\r\n    \"chatMsa\": \"POSTMAN\"\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/send/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"send",
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/test/groupid]GroupId테스트(병렬처리)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// let iterations = 200; // 요청을 보낼 횟수\r",
+							"// for (let i = 0; i < iterations; i++) {\r",
+							"//     pm.sendRequest({\r",
+							"//         url: pm.request.url.toString()+i.toString(),\r",
+							"//         method: pm.request.method,\r",
+							"//         header: pm.request.headers\r",
+							"//     }, function (err, res) {\r",
+							"//         console.log(res);\r",
+							"//     });\r",
+							"// }\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/test/groupid?message=추출A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"test",
+						"groupid"
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "추출A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[/test/partition]메시지key에 따른 partition구분 확인",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/test/partition?key-count=100&message=POSTMAN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"test",
+						"partition"
+					],
+					"query": [
+						{
+							"key": "key-count",
+							"value": "100"
+						},
+						{
+							"key": "message",
+							"value": "POSTMAN"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

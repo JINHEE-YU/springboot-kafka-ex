@@ -74,7 +74,7 @@ public class KafkaExAPIController {
     }
   }
 
-  @GetMapping("/partition")
+  @GetMapping("/test/partition")
   public String useMessageKey(@RequestParam("key-count") int keyCount,
       @RequestParam(value = "message") String message) {
 
@@ -104,7 +104,7 @@ public class KafkaExAPIController {
     }
   }
 
-  @PostMapping("/send2/user")
+  @PostMapping("/send/user")
   public String sendUserDTO(@RequestBody UserDTO user) {
 
     try {
@@ -115,7 +115,7 @@ public class KafkaExAPIController {
     return "hello";
   }
 
-  @PostMapping("/send2/users")
+  @PostMapping("/send/users")
   public String sendUserDTO(@RequestBody List<UserDTO> users) {
 
     kafkaProducer.sendMessage(users);
