@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.example.springboot_kafka_ex.entity.StockPrice;
 import com.example.springboot_kafka_ex.entity.repository.StockPriceRepository;
 import com.example.springboot_kafka_ex.kafka.UserDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
@@ -97,13 +96,13 @@ public class KafkaConsumer {
     ObjectMapper objectMapper = new ObjectMapper();
 
     try {
-      for (Object stockPrice : messages) {
-        if (stockPrice instanceof LinkedHashMap) {
+      for (Object linkedHashMap : messages) {
+        if (linkedHashMap instanceof LinkedHashMap) {
           // LinkedHashMap을 StockPrice로 변환
-          StockPrice test = objectMapper.convertValue(stockPrice, StockPrice.class);
-          stockPriceRepository.save(test);
+          StockPrice stockPrice = objectMapper.convertValue(linkedHashMap, StockPrice.class);
+          stockPriceRepository.save(stockPrice);
         } else {
-          log.warn("Unexpected type: {}", stockPrice.getClass().getName());
+          log.warn("Unexpected type: {}", linkedHashMap.getClass().getName());
         }
       }
     } catch (Exception e) {
