@@ -1,12 +1,15 @@
-package com.example.springboot_kafka_ex.producer;
+package com.example.springboot_kafka_ex.kafka.producer;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
-import com.example.springboot_kafka_ex.UserDTO;
+import com.example.springboot_kafka_ex.entity.StockPrice;
+import com.example.springboot_kafka_ex.kafka.UserDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,8 @@ public class KafkaProducer {
   private String topic2;
   @Value("${spring.kafka.topic.dto-list}")
   private String topicDtoList;
+  @Value("${spring.kafka.topic.stock-price}")
+  private String topicStockPrice;
   /**
    * groupId를 공유하는 소비자 간에 메시지를 중복되지 않게 병렬로 처리
    * 현상 확인을 위해 3개의 파티션으로 구성
@@ -37,11 +42,11 @@ public class KafkaProducer {
   @Value("${spring.kafka.topic.check-partition}")
   String checkPartitionTopic;
 
-
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaUserTemplate;
   private final KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate;
+  private final KafkaTemplate<String, List<StockPrice>> stockPriceListTemplate;
 
   public void sendMessage2CheckPartition(String messageKey, String message) {
     sendMessage(kafkaTemplate, checkPartitionTopic, messageKey, message);
@@ -73,6 +78,16 @@ public class KafkaProducer {
 
   public void sendMessage(List<UserDTO> messages) {
     sendMessage(kafkaUserListTemplate, topicDtoList, messages);
+  }
+
+  public CompletableFuture<Boolean> send(List<StockPrice> stockPrices) {
+    CompletableFuture<Boolean> future = sendStockPriceMessage(stockPriceListTemplate, topicStockPrice, stockPrices);
+
+    return future.thenApply(isSuccess -> {
+      log.info("Was the message sent successfully? : " + isSuccess);
+      return isSuccess;
+    });
+
   }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {
@@ -107,4 +122,19 @@ public class KafkaProducer {
     }
   }
 
+  private <T> CompletableFuture<Boolean> sendStockPriceMessage(KafkaTemplate<String, T> tpl, String topic, T message) {
+    CompletableFuture<SendResult<String, T>> future = tpl.send(topic, message);
+
+    return future.thenApply(sendResult -> {
+      // 메시지 전송 성공
+      log.info("Message sent successfully: " + sendResult.getRecordMetadata());
+      log.info("topic = {}, message = {}", topic, message.toString());
+      return true;
+    }).exceptionally(ex -> {
+      // 메시지 전송 실패
+      log.error("Message sending failed: " + ex.getMessage());
+      return false;
+    });
+
+  }
 }

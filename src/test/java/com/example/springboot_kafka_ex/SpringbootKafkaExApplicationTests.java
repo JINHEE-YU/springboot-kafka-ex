@@ -14,8 +14,8 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.example.springboot_kafka_ex.consumer.KafkaConsumer;
-import com.example.springboot_kafka_ex.producer.KafkaProducer;
+import com.example.springboot_kafka_ex.kafka.consumer.KafkaConsumer;
+import com.example.springboot_kafka_ex.kafka.producer.KafkaProducer;
 
 @SpringBootTest
 @ActiveProfiles("test")

@@ -1,4 +1,4 @@
-package com.example.springboot_kafka_ex;
+package com.example.springboot_kafka_ex.api;
 
 import java.util.List;
 
@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springboot_kafka_ex.producer.KafkaProducer;
+import com.example.springboot_kafka_ex.kafka.UserDTO;
+import com.example.springboot_kafka_ex.kafka.producer.KafkaProducer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

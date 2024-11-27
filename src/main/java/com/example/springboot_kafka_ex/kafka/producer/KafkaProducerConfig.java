@@ -1,4 +1,4 @@
-package com.example.springboot_kafka_ex.producer;
+package com.example.springboot_kafka_ex.kafka.producer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +13,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.example.springboot_kafka_ex.UserDTO;
+import com.example.springboot_kafka_ex.entity.StockPrice;
+import com.example.springboot_kafka_ex.kafka.UserDTO;
 
 @Configuration
 public class KafkaProducerConfig {
@@ -73,5 +74,20 @@ public class KafkaProducerConfig {
   @Bean
   public KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate() {
     return new KafkaTemplate<>(producerUserListFactory());
+  }
+
+  @Bean
+  public ProducerFactory<String, List<StockPrice>> producerStockPriceListFactory() {
+    Map<String, Object> configProps = new HashMap<>();
+    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+    return new DefaultKafkaProducerFactory<>(configProps);
+  }
+
+  @Bean
+  public KafkaTemplate<String, List<StockPrice>> stockPriceListTemplate() {
+    return new KafkaTemplate<>(producerStockPriceListFactory());
   }
 }
