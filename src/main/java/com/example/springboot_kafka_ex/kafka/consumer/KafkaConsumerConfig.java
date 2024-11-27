@@ -1,4 +1,4 @@
-package com.example.springboot_kafka_ex.consumer;
+package com.example.springboot_kafka_ex.kafka.consumer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import com.example.springboot_kafka_ex.UserDTO;
+import com.example.springboot_kafka_ex.entity.StockPrice;
+import com.example.springboot_kafka_ex.kafka.UserDTO;
 
 @Configuration
 public class KafkaConsumerConfig {
@@ -102,6 +103,31 @@ public class KafkaConsumerConfig {
   public ConcurrentKafkaListenerContainerFactory<String, List<UserDTO>> kafkaListenerUserListContainerFactory() {
     ConcurrentKafkaListenerContainerFactory<String, List<UserDTO>> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerUserListFactory());
+    return factory;
+  }
+
+  @Bean
+  public ConsumerFactory<String, List<StockPrice>> consumerStockPriceListFactory() {
+    Map<String, Object> configProps = new HashMap<>();
+    configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
+    configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+    configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class.getName());
+    configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+    // configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE,
+    // "java.util.List<com.example.springboot_kafka_ex.entity.StockPrice>");
+    configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, List.class.getName());
+    configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "com.example.springboot_kafka_ex.*");
+
+    return new DefaultKafkaConsumerFactory<>(configProps);
+
+  }
+
+  @Bean
+  public ConcurrentKafkaListenerContainerFactory<String, List<StockPrice>> kafkaListenerStockPriceListContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, List<StockPrice>> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerStockPriceListFactory());
     return factory;
   }
 

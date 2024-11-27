@@ -13,9 +13,18 @@ spring:
       test: testTopic
       group-test: group-test
       check-partition: check-partition
+      stock-price: stock-price
     consumer:
       group-id: my-group
       auto-offset-reset: earliest
+  datasource:
+    url: jdbc:postgresql://localhost:54321/postgres
+    username: postgres
+    password: mypostgre
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 # logging:
 #   level:
 #     root: INFO

@@ -1,14 +1,20 @@
-package com.example.springboot_kafka_ex.consumer;
+package com.example.springboot_kafka_ex.kafka.consumer;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.example.springboot_kafka_ex.UserDTO;
+import com.example.springboot_kafka_ex.entity.StockPrice;
+import com.example.springboot_kafka_ex.entity.repository.StockPriceRepository;
+import com.example.springboot_kafka_ex.kafka.UserDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +30,9 @@ public class KafkaConsumer {
 
   private CountDownLatch latch = new CountDownLatch(1);
   private String payload = null;
+
+  @Autowired
+  private StockPriceRepository stockPriceRepository;
 
   /** 콤마(,)를 기준으로 구분된 1건의 "문자열" 데이터 수령 */
   @KafkaListener(topics = "${spring.kafka.topic.first}", groupId = "1")
@@ -79,6 +88,28 @@ public class KafkaConsumer {
   public void listenToTest(ConsumerRecord<?, ?> consumerRecord) {
     setPayload(consumerRecord.toString());
     latch.countDown();
+  }
+
+  @KafkaListener(topics = "${spring.kafka.topic.stock-price}", containerFactory = "kafkaListenerStockPriceListContainerFactory")
+  public void listenStockPriceList(List<StockPrice> messages) {
+    log.info("kafka message = {}", messages.toString());
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    try {
+      for (Object stockPrice : messages) {
+        if (stockPrice instanceof LinkedHashMap) {
+          // LinkedHashMap을 StockPrice로 변환
+          StockPrice test = objectMapper.convertValue(stockPrice, StockPrice.class);
+          stockPriceRepository.save(test);
+        } else {
+          log.warn("Unexpected type: {}", stockPrice.getClass().getName());
+        }
+      }
+    } catch (Exception e) {
+      log.error("Error processing stock prices: {}", e.getMessage());
+    }
+
   }
 
 }

@@ -1,4 +1,4 @@
-package com.example.springboot_kafka_ex;
+package com.example.springboot_kafka_ex.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
