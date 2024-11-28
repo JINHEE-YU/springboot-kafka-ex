@@ -13,17 +13,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class JacksonConfig {
-
-  // @Bean
-  // public ObjectMapper customObjectMapper() {
-  // ObjectMapper mapper = new ObjectMapper();
-  // SimpleModule module = new SimpleModule();
-  // module.addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer());
-  // module.addDeserializer(OffsetDateTime.class, new
-  // OffsetDateTimeDeserializer());
-  // mapper.registerModule(module);
-  // return mapper;
-  // }
   @Bean
   public static ObjectMapper objectMapper() {
     // ObjectMapper 설정

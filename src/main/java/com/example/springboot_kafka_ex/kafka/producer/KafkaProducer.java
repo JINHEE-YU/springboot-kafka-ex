@@ -46,7 +46,8 @@ public class KafkaProducer {
   private final KafkaTemplate<String, List<String>> kafkaStringListTemplate;
   private final KafkaTemplate<String, UserDTO> kafkaUserTemplate;
   private final KafkaTemplate<String, List<UserDTO>> kafkaUserListTemplate;
-  private final KafkaTemplate<String, List<StockPrice>> stockPriceListTemplate;
+  private final KafkaTemplate<String, StockPrice> stockPriceTemplate;
+  // private final KafkaTemplate<String, List<StockPrice>> stockPriceListTemplate;
 
   public void sendMessage2CheckPartition(String messageKey, String message) {
     sendMessage(kafkaTemplate, checkPartitionTopic, messageKey, message);
@@ -80,8 +81,8 @@ public class KafkaProducer {
     sendMessage(kafkaUserListTemplate, topicDtoList, messages);
   }
 
-  public CompletableFuture<Boolean> send(List<StockPrice> stockPrices) {
-    CompletableFuture<Boolean> future = sendStockPriceMessage(stockPriceListTemplate, topicStockPrice, stockPrices);
+  public CompletableFuture<Boolean> send(StockPrice stockPrices) {
+    CompletableFuture<Boolean> future = sendStockPriceMessage(stockPriceTemplate, topicStockPrice, stockPrices);
 
     return future.thenApply(isSuccess -> {
       log.info("Was the message sent successfully? : " + isSuccess);
@@ -89,6 +90,16 @@ public class KafkaProducer {
     });
 
   }
+  // public CompletableFuture<Boolean> send(List<StockPrice> stockPrices) {
+  // CompletableFuture<Boolean> future =
+  // sendStockPriceMessage(stockPriceListTemplate, topicStockPrice, stockPrices);
+
+  // return future.thenApply(isSuccess -> {
+  // log.info("Was the message sent successfully? : " + isSuccess);
+  // return isSuccess;
+  // });
+
+  // }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {
     try {

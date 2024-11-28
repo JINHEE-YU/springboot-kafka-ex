@@ -19,11 +19,16 @@ import lombok.NoArgsConstructor;
 // import java.time.format.DateTimeFormatter;
 
 @Data
-@NoArgsConstructor
+// @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "stock_prices", schema = "public")
 public class StockPrice {
+
+  public StockPrice() {
+    this.time = OffsetDateTime.now();
+  }
+
   @Id
   @Column(name = "time", nullable = false)
   private OffsetDateTime time = OffsetDateTime.now();

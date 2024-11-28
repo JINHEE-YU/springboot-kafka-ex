@@ -107,6 +107,30 @@ public class KafkaConsumerConfig {
   }
 
   @Bean
+  public ConsumerFactory<String, StockPrice> consumerStockPriceFactory() {
+    Map<String, Object> configProps = new HashMap<>();
+    configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
+    configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+    configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class.getName());
+    configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+
+    // 들어오는 record 를 객체로 받기 위한 deserializer
+    JsonDeserializer<StockPrice> deserializer = new JsonDeserializer<>(StockPrice.class, false);
+
+    return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer);
+
+  }
+
+  @Bean
+  public ConcurrentKafkaListenerContainerFactory<String, StockPrice> kafkaListenerStockPriceContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, StockPrice> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerStockPriceFactory());
+    return factory;
+  }
+
+  @Bean
   public ConsumerFactory<String, List<StockPrice>> consumerStockPriceListFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");

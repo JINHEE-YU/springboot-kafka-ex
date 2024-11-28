@@ -20,6 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.example.springboot_kafka_ex.entity.StockPrice;
+import com.example.springboot_kafka_ex.kafka.JacksonConfig;
 import com.example.springboot_kafka_ex.kafka.consumer.KafkaConsumer;
 import com.example.springboot_kafka_ex.kafka.producer.KafkaProducer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -60,11 +61,11 @@ class SpringbootKafkaExApplicationTests {
 	@Test
 	public void testStockPriceSerialization1() throws Exception {
 		// ObjectMapper 설정
-		ObjectMapper objectMapper = new ObjectMapper();
-		// Java 8 날짜/시간 모듈 등록
-		objectMapper.registerModule(new JavaTimeModule());
-		// 기본 시간대를 Asia/Seoul로 설정
-		objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+		ObjectMapper objectMapper = JacksonConfig.objectMapper();// new ObjectMapper();
+		// // Java 8 날짜/시간 모듈 등록
+		// objectMapper.registerModule(new JavaTimeModule());
+		// // 기본 시간대를 Asia/Seoul로 설정
+		// objectMapper.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
 		// StockPrice 객체 생성
 		StockPrice stockPrice = new StockPrice();
