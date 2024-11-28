@@ -1,15 +1,22 @@
 package com.example.springboot_kafka_ex.entity;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+// import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class StockPrice {
   @Id
   @Column(name = "time", nullable = false)
-  private OffsetDateTime time;
+  private OffsetDateTime time = OffsetDateTime.now();
 
   @Column(name = "symbol", nullable = false)
   private String symbol;
@@ -30,19 +37,12 @@ public class StockPrice {
   @Column(name = "volume")
   private Integer volume;
 
-  /**
-   * <p>
-   * '@PrePersist'로 정의된 함수
-   * </p>
-   * <ul>
-   ** <li>StockPrices 엔티티가 DB에 저장되기 전, 자동으로 호출</li>
-   ** <li>time에 현재 시간 자동 할당</li>
-   * </ul>
-   */
-  @PrePersist
-  public void prePersist() {
-    if (this.time == null) {
-      this.time = OffsetDateTime.now();
-    }
+  // 문자열을 받아서 StockPrice 객체를 생성하는 정적 메서드
+  public static OffsetDateTime fromString(String timeString) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    OffsetDateTime time = OffsetDateTime.parse(timeString, formatter);
+    return time;
+
   }
+
 }

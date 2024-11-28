@@ -107,6 +107,7 @@ public class KafkaConsumer {
         }
       }
     } catch (Exception e) {
+      e.printStackTrace();
       log.error("Error processing stock prices: {}", e.getMessage());
     }
 

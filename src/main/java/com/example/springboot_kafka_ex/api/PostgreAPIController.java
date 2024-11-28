@@ -1,5 +1,7 @@
 package com.example.springboot_kafka_ex.api;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -68,6 +70,31 @@ public class PostgreAPIController {
 
   @PostMapping("/stock/send")
   public CompletableFuture<Boolean> sendStockPrice(@RequestBody List<StockPrice> stockPrices) {
+
+    CompletableFuture<Boolean> future = kafkaProducer.send(stockPrices);
+
+    log.info("try sending : {}", stockPrices.toString());
+
+    return future.handle((result, ex) -> {
+      if (Objects.nonNull(ex)) {
+        ex.printStackTrace();
+        log.error("message send error : " + ex.getMessage());
+      }
+      return result;
+    });
+
+  }
+
+  @PostMapping("/stock/send/test")
+  public CompletableFuture<Boolean> sendStockPriceTest(@RequestBody List<StockPrice> body) {
+
+    List<StockPrice> stockPrices = new ArrayList<StockPrice>();
+    StockPrice stockPrice = new StockPrice();
+    stockPrice.setTime(OffsetDateTime.parse("2024-11-28T23:51:00+09:00"));
+    stockPrice.setSymbol("API");
+    stockPrice.setPrice(4000.0);
+    stockPrice.setVolume(40);
+    stockPrices.add(stockPrice);
 
     CompletableFuture<Boolean> future = kafkaProducer.send(stockPrices);
 

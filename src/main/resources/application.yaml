@@ -25,6 +25,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  jackson:
+    date-format: ISO-8601
+    time-zone: Asia/Seoul
 # logging:
 #   level:
 #     root: INFO
