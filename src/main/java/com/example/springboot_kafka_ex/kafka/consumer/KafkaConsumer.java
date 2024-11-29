@@ -1,6 +1,5 @@
 package com.example.springboot_kafka_ex.kafka.consumer;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import com.example.springboot_kafka_ex.entity.StockPrice;
 import com.example.springboot_kafka_ex.entity.repository.StockPriceRepository;
 import com.example.springboot_kafka_ex.kafka.UserDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -90,51 +87,18 @@ public class KafkaConsumer {
     latch.countDown();
   }
 
+  /**
+   * <p>
+   * 단일개의 StockPrice 데이터를 kafka를 거쳐 DB에 저장
+   * </p>
+   * - List형으로 저장하기엔 `OffsetDateTime`타입의 속성때문에 직렬화/역직렬화가 원활하지않음
+   * 
+   * @param messages
+   */
   @KafkaListener(topics = "${spring.kafka.topic.stock-price}", containerFactory = "kafkaListenerStockPriceContainerFactory")
   public void listenStockPriceList(StockPrice messages) {
     log.info("kafka message = {}", messages.toString());
     stockPriceRepository.save(messages);
-
-    // ObjectMapper objectMapper = new ObjectMapper();
-
-    // try {
-    // for (Object stockPrice : messages) {
-    // if (stockPrice instanceof LinkedHashMap) {
-    // // LinkedHashMap을 StockPrice로 변환
-    // StockPrice test = objectMapper.convertValue(stockPrice, StockPrice.class);
-    // } else {
-    // log.warn("Unexpected type: {}", stockPrice.getClass().getName());
-    // }
-    // }
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // log.error("Error processing stock prices: {}", e.getMessage());
-    // }
-
   }
-
-  // @KafkaListener(topics = "${spring.kafka.topic.stock-price}", containerFactory
-  // = "kafkaListenerStockPriceListContainerFactory")
-  // public void listenStockPriceList(List<StockPrice> messages) {
-  // log.info("kafka message = {}", messages.toString());
-
-  // ObjectMapper objectMapper = new ObjectMapper();
-
-  // try {
-  // for (Object stockPrice : messages) {
-  // if (stockPrice instanceof LinkedHashMap) {
-  // // LinkedHashMap을 StockPrice로 변환
-  // StockPrice test = objectMapper.convertValue(stockPrice, StockPrice.class);
-  // stockPriceRepository.save(test);
-  // } else {
-  // log.warn("Unexpected type: {}", stockPrice.getClass().getName());
-  // }
-  // }
-  // } catch (Exception e) {
-  // e.printStackTrace();
-  // log.error("Error processing stock prices: {}", e.getMessage());
-  // }
-
-  // }
 
 }

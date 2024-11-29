@@ -14,23 +14,3 @@ public class OffsetDateTimeSerializer extends JsonSerializer<OffsetDateTime> {
     gen.writeString(value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
   }
 }
-// public class OffsetDateTimeSerializer<T> implements Serializer<T> {
-// private final ObjectMapper objectMapper = JacksonConfig.objectMapper();
-
-// @Override
-// public void configure(Map<String, ?> configs, boolean isKey) {
-// }
-
-// @Override
-// public byte[] serialize(String topic, T data) {
-// try {
-// return objectMapper.writeValueAsBytes(data);
-// } catch (Exception e) {
-// throw new RuntimeException("Error serializing value", e);
-// }
-// }
-
-// @Override
-// public void close() {
-// }
-// }

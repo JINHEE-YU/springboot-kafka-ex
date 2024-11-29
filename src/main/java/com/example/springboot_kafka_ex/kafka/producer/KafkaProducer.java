@@ -90,16 +90,6 @@ public class KafkaProducer {
     });
 
   }
-  // public CompletableFuture<Boolean> send(List<StockPrice> stockPrices) {
-  // CompletableFuture<Boolean> future =
-  // sendStockPriceMessage(stockPriceListTemplate, topicStockPrice, stockPrices);
-
-  // return future.thenApply(isSuccess -> {
-  // log.info("Was the message sent successfully? : " + isSuccess);
-  // return isSuccess;
-  // });
-
-  // }
 
   private <T> void sendMessage(KafkaTemplate<String, T> tpl, String topic, T message) {
     try {

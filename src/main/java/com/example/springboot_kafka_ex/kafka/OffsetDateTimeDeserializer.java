@@ -14,28 +14,3 @@ public class OffsetDateTimeDeserializer extends JsonDeserializer<OffsetDateTime>
     return OffsetDateTime.parse(p.getText(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
   }
 }
-// public class OffsetDateTimeDeserializer<T> implements Deserializer<T> {
-// private final ObjectMapper objectMapper = JacksonConfig.objectMapper();
-// private Class<T> clazz;
-
-// public OffsetDateTimeDeserializer(Class<T> clazz) {
-// this.clazz = clazz;
-// }
-
-// @Override
-// public void configure(Map<String, ?> configs, boolean isKey) {
-// }
-
-// @Override
-// public T deserialize(String topic, byte[] data) {
-// try {
-// return objectMapper.readValue(data, clazz);
-// } catch (Exception e) {
-// throw new RuntimeException("Error deserializing value", e);
-// }
-// }
-
-// @Override
-// public void close() {
-// }
-// }
